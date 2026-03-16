@@ -96,3 +96,7 @@ export function buildDefaultParams(apiName, token) {
     redirects: 0,
   };
 }
+
+export function getBrokerId(){
+  return parseInt(ENV.BROKER_ID);
+}
