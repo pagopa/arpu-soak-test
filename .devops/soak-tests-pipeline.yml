@@ -105,7 +105,7 @@ variables:
     value: tokenAssistance/getZendeskAssistanceToken.js
 
   - name: k6Test_Broker_getPublicBrokerInfo
-    value: broker/getPublicBrokerInfo
+    value: broker/getPublicBrokerInfo.js
 
 
   # Resolved list of k6 script to execute
