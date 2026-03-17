@@ -175,9 +175,7 @@ jobs:
                       -e THRESHOLDS_API_MAX_P90_MS_ENV=${{ parameters.THRESHOLDS_API_MAX_P90_MS_ENV }} \
                       -e THRESHOLDS_API_MAX_P95_MS_ENV=${{ parameters.THRESHOLDS_API_MAX_P95_MS_ENV }} \
                       \
-                      ${{ if eq(parameters.SCRIPT, 'Broker_getPublicBrokerInfo') }}:
                       -e BROKER_ID=${{ parameters.BROKER_ID }} \
-                      \
                       --entrypoint /app/runAll.sh \
                       grafana/k6:latest \
                       ${{ parameters.TARGET_ENV }} ${{k6Test}}
