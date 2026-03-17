@@ -3,7 +3,7 @@ import { BROKER_API_NAMES, getPublicBrokerInfo } from "../../api/broker.js";
 import defaultHandleSummaryBuilder from "../../common/handleSummaryBuilder.js";
 import { defaultApiOptionsBuilder } from "../../common/dynamicScenarios/defaultOptions.js";
 import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
-import { getBrokerId } from "../../common/envVars.js";
+import { CONFIG } from "../../common/envVars.js";
 
 const application = "broker";
 const testName = "getPublicBrokerInfo";
@@ -21,17 +21,14 @@ export const options = defaultApiOptionsBuilder(
 export const handleSummary = defaultHandleSummaryBuilder(application, testName);
 
 export function setup() {
-  const externalId = null;
-
   return { 
-        brokerId: getBrokerId(), 
-        externalId: externalId 
+        brokerId: CONFIG.BROKER_ID
     };
 }
 
 
 export default (data) => {
-  const getPublicBrokerInfoResult = getPublicBrokerInfo(data.brokerId, data.externalId);
+  const getPublicBrokerInfoResult = getPublicBrokerInfo(data.brokerId);
 
   assert(getPublicBrokerInfoResult, [statusOk()]);
 

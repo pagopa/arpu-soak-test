@@ -9,11 +9,11 @@ export const BROKER_API_NAMES = {
 
 const baseUrl = getBaseUrl();
 
-export function getPublicBrokerInfo(brokerId, externalId) {
+export function getPublicBrokerInfo(brokerId) {
     const apiName = BROKER_API_NAMES.getPublicBrokerInfo;
     const params = buildDefaultParams(apiName);
 
-    const res = http.get(`${baseUrl}/public/brokers?brokerId=${brokerId}&externalId=${externalId}`, params);
+    const res = http.get(`${baseUrl}/public/brokers?brokerId=${brokerId}`, params);
 
     logResult(apiName, res);
     return res;

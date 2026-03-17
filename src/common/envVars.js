@@ -79,6 +79,8 @@ export const CONFIG = {
   SUMMARY: {
     RESULTS_DIR: __ENV.RESULTS_DIR,
   },
+
+  BROKER_ID: parseInt(__ENV.BROKER_ID)
 };
 
 export const defaultHeaders = {
@@ -95,8 +97,4 @@ export function buildDefaultParams(apiName, token) {
     tags: { apiName },
     redirects: 0,
   };
-}
-
-export function getBrokerId(){
-  return parseInt(__ENV.BROKER_ID);
 }
