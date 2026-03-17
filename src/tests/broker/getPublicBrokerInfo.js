@@ -22,7 +22,7 @@ export const handleSummary = defaultHandleSummaryBuilder(application, testName);
 
 export function setup() {
   return { 
-        brokerId: CONFIG.BROKER_ID
+      brokerId: CONFIG.CONTEXT.BROKER_ID
     };
 }
 

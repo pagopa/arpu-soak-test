@@ -80,7 +80,10 @@ export const CONFIG = {
     RESULTS_DIR: __ENV.RESULTS_DIR,
   },
 
-  BROKER_ID: parseInt(__ENV.BROKER_ID)
+  CONTEXT: {
+    BROKER_ID: parseInt(__ENV.BROKER_ID)
+  }
+
 };
 
 export const defaultHeaders = {
