@@ -18,6 +18,16 @@ All configured tests as default will be executed simulating the following worklo
 
 ## Configuration
 
+# Context
+
+The following environment variables allow to configure the test context data:
+
+| ENV       | Description                                                       | Default |
+|-----------|-------------------------------------------------------------------|---------|
+| BROKER_ID | Identifier of the broker                                          |         |   
+
+# Scenario
+
 The following environment variables allow to configure the scenarios discuessed above:
 
 | ENV                                  | Description                                                                                                                                                                                 | Default |
