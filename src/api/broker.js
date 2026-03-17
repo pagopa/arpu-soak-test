@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { logResult } from "../common/dynamicScenarios/utils.js";
-import { getBaseUrl } from "../common/environment"
-import { buildDefaultParams } from "../common/envVars";
+import { getBaseUrl } from "../common/environment.js"
+import { buildDefaultParams } from "../common/envVars.js";
 
 export const BROKER_API_NAMES = {
     getPublicBrokerInfo: "broker/getPublicBrokerInfo"

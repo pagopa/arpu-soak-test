@@ -1,5 +1,5 @@
 import { assert, statusOk } from "../../common/assertions.js";
-import { BROKER_API_NAMES, getPublicBrokerInfo } from "../../api/broker";
+import { BROKER_API_NAMES, getPublicBrokerInfo } from "../../api/broker.js";
 import defaultHandleSummaryBuilder from "../../common/handleSummaryBuilder.js";
 import { defaultApiOptionsBuilder } from "../../common/dynamicScenarios/defaultOptions.js";
 import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
