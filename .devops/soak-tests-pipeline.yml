@@ -34,6 +34,12 @@ parameters:
       - runAll_TokenAssistance
       - TokenAssistance_getZendeskAssistanceToken
 
+      - Broker_getPublicBrokerInfo
+
+  - name: "BROKER_ID"
+    displayName: "Broker ID"
+    type: string
+    default: ""
 
   - name: "SCENARIO"
     displayName: "Soak test type"
@@ -98,6 +104,9 @@ variables:
   - name: k6Test_TokenAssistance_getZendeskAssistanceToken
     value: tokenAssistance/getZendeskAssistanceToken.js
 
+  - name: k6Test_Broker_getPublicBrokerInfo
+    value: broker/getPublicBrokerInfo.js
+
 
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
@@ -137,6 +146,14 @@ jobs:
                 docker pull grafana/k6:latest
               displayName: Pull k6 image
 
+            - script: |
+                if [ -z "${{ parameters.BROKER_ID }}" ]; then
+                  echo "BROKER_ID must be provided"
+                  exit 1
+                fi
+              displayName: Validate broker parameters
+              condition: eq('${{ parameters.SCRIPT }}', 'Broker_getPublicBrokerInfo')
+
             - ${{ each k6Test in split(variables.SCRIPTS_TO_EXECUTE, ',') }}:
                 - script: |
                     chmod +x runAll.sh
@@ -158,6 +175,7 @@ jobs:
                       -e THRESHOLDS_API_MAX_P90_MS_ENV=${{ parameters.THRESHOLDS_API_MAX_P90_MS_ENV }} \
                       -e THRESHOLDS_API_MAX_P95_MS_ENV=${{ parameters.THRESHOLDS_API_MAX_P95_MS_ENV }} \
                       \
+                      -e BROKER_ID=${{ parameters.BROKER_ID }} \
                       --entrypoint /app/runAll.sh \
                       grafana/k6:latest \
                       ${{ parameters.TARGET_ENV }} ${{k6Test}}

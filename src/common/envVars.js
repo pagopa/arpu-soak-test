@@ -79,6 +79,11 @@ export const CONFIG = {
   SUMMARY: {
     RESULTS_DIR: __ENV.RESULTS_DIR,
   },
+
+  CONTEXT: {
+    BROKER_ID: parseInt(__ENV.BROKER_ID)
+  }
+
 };
 
 export const defaultHeaders = {
