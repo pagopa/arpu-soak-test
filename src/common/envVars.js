@@ -98,5 +98,5 @@ export function buildDefaultParams(apiName, token) {
 }
 
 export function getBrokerId(){
-  return parseInt(ENV.BROKER_ID);
+  return parseInt(__ENV.BROKER_ID);
 }
