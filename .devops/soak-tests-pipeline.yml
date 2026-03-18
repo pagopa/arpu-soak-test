@@ -36,6 +36,8 @@ parameters:
 
       - Broker_getPublicBrokerInfo
 
+      - Organization_getOrganizationWithSpontaneous
+
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
@@ -107,6 +109,9 @@ variables:
   - name: k6Test_Broker_getPublicBrokerInfo
     value: broker/getPublicBrokerInfo.js
 
+  - name: k6Test_Organization_getOrganizationWithSpontaneous
+    value: organization/getOrganizationWithSpontaneous.js
+
 
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
@@ -152,7 +157,14 @@ jobs:
                   exit 1
                 fi
               displayName: Validate broker parameters
-              condition: eq('${{ parameters.SCRIPT }}', 'Broker_getPublicBrokerInfo')
+              condition: |
+                and(
+                  succeeded(),
+                  or(
+                    eq('${{ parameters.SCRIPT }}', 'Broker_getPublicBrokerInfo'),
+                    eq('${{ parameters.SCRIPT }}', 'Organization_getOrganizationWithSpontaneous')
+                  )
+                )
 
             - ${{ each k6Test in split(variables.SCRIPTS_TO_EXECUTE, ',') }}:
                 - script: |
