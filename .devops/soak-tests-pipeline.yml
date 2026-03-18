@@ -41,7 +41,6 @@ parameters:
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
-    default: ""
 
   - name: "SCENARIO"
     displayName: "Soak test type"
@@ -150,21 +149,6 @@ jobs:
             - script: |
                 docker pull grafana/k6:latest
               displayName: Pull k6 image
-
-            - script: |
-                if [ -z "${{ parameters.BROKER_ID }}" ]; then
-                  echo "BROKER_ID must be provided"
-                  exit 1
-                fi
-              displayName: Validate broker parameters
-              condition: |
-                and(
-                  succeeded(),
-                  or(
-                    eq('${{ parameters.SCRIPT }}', 'Broker_getPublicBrokerInfo'),
-                    eq('${{ parameters.SCRIPT }}', 'Organization_getOrganizationsWithSpontaneous')
-                  )
-                )
 
             - ${{ each k6Test in split(variables.SCRIPTS_TO_EXECUTE, ',') }}:
                 - script: |
