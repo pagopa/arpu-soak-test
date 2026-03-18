@@ -6,7 +6,7 @@ import { getAuthToken } from "../../common/utils.js";
 import { getOrganizationsWithSpontaneous,
     ORGANIZATION_API_NAMES 
 } from "../../api/organization.js";
-import { CONFIG, getBrokerId } from "../../common/envVars.js";
+import { CONFIG } from "../../common/envVars.js";
 
 const application = "organization";
 const testName = "getOrganizationsWithSpontaneous";
