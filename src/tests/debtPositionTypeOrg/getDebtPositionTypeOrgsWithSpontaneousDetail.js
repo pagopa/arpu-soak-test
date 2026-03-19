@@ -67,5 +67,3 @@ export default (data) => {
     return;
   }
 };
-
-time="2026-03-19T14:50:22Z" level=error msg="GoError: getting scenario information outside of the VU context is not supported\n\tat testEntitiesBasedScenariosBaseIndexRetriever (file:///app/src/common/dynamicScenarios/utils.js:28:49(12))\n\tat getScenarioTestEntityIndex (file:///app/src/common/dynamicScenarios/utils.js:31:65(3))\n\tat getScenarioTestEntity (file:///app/src/common/dynamicScenarios/utils.js:41:49(5))\n\tat getTestEntity (file:///app/src/common/utils.js:38:31(4))\n\tat setup (file:///app/src/tests/debtPositionTypeOrg/getDebtPositionTypeOrgsWithSpontaneousDetail.js:39:39(34))\n" hint="script exception"
