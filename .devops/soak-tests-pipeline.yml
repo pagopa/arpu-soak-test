@@ -38,6 +38,11 @@ parameters:
 
       - Organization_getOrganizationsWithSpontaneous
 
+      - runAll_DebtPositionTypeOrg
+      - DebtPositionTypeOrg_getDebtPositionTypeOrgsWithSpontaneous
+      - DebtPositionTypeOrg_getDebtPositionTypeOrgsWithSpontaneousDetail
+      - DebtPositionTypeOrg_getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear
+
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
@@ -111,6 +116,18 @@ variables:
   - name: k6Test_Organization_getOrganizationsWithSpontaneous
     value: organization/getOrganizationsWithSpontaneous.js
 
+  - name: k6Test_runAll_DebtPositionTypeOrg
+    value: debtPositionTypeOrg/
+
+  - name: k6Test_DebtPositionTypeOrg_getDebtPositionTypeOrgsWithSpontaneous
+    value: debtPositionTypeOrg/getDebtPositionTypeOrgsWithSpontaneous.js
+
+  - name: k6Test_DebtPositionTypeOrg_getDebtPositionTypeOrgsWithSpontaneousDetail
+    value: debtPositionTypeOrg/getDebtPositionTypeOrgsWithSpontaneousDetail.js
+  
+  - name: k6Test_DebtPositionTypeOrg_getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear
+    value: debtPositionTypeOrg/getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear.js
+    
 
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
