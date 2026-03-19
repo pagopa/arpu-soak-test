@@ -7,7 +7,7 @@ import {
 import defaultHandleSummaryBuilder from "../../common/handleSummaryBuilder.js";
 import { defaultApiOptionsBuilder } from "../../common/dynamicScenarios/defaultOptions.js";
 import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
-import { getAuthToken, getTestEntity } from "../../common/utils.js";
+import { getAuthToken, getTestEntity, getRandom} from "../../common/utils.js";
 import { getOrganizationsWithSpontaneous } from "../../api/organization.js";
 import { CONFIG } from "../../common/envVars.js";
 
