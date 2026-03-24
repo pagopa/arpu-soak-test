@@ -26,18 +26,20 @@ export const handleSummary = defaultHandleSummaryBuilder(application, testName);
 
 export function setup() {
   const authToken = getAuthToken();
+  const xFiscalCode = getAuthFiscalCode();
   const brokerId = CONFIG.CONTEXT.BROKER_ID;
 
   return {
     brokerId: brokerId,
-    token: authToken,
+    fiscalCode: xFiscalCode,
+    token: authToken
   };
 
 }
 
 
 export default (data) => {
-  const getPagedUnpaidDebtPositionsResult = getPagedUnpaidDebtPositions(data.brokerId, data.token);
+  const getPagedUnpaidDebtPositionsResult = getPagedUnpaidDebtPositions(data.brokerId, data.fiscalCode, data.token);
 
   assert(getPagedUnpaidDebtPositionsResult, [statusOk()]);
 

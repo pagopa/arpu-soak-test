@@ -27,8 +27,9 @@ export const handleSummary = defaultHandleSummaryBuilder(application, testName);
 
 export function setup() {
   const authToken = getAuthToken();
+  const xFiscalCode = getAuthFiscalCode();
   const brokerId = CONFIG.CONTEXT.BROKER_ID;
-  const debtPositions = getPagedUnpaidDebtPositions(brokerId, authToken).json().content;
+  const debtPositions = getPagedUnpaidDebtPositions(brokerId, xFiscalCode, authToken).json().content;
 
   if(debtPositions.length === 0){
     abort("No elements found in debtPositions list please restart test with at least one element");
@@ -37,14 +38,15 @@ export function setup() {
   return {
     brokerId: brokerId,
     token: authToken,
-    debtPositions: debtPositions.map(item => item.organizationId)
+    debtPositions: debtPositions.map(item => item.organizationId),
+    fiscalCode: xFiscalCode
   };
 
 }
 
 export default (data) => {
   const organizationId = getTestEntity(data.debtPositions);
-  const getDebtorUnpaidDebtPositionOverviewResult = getDebtorUnpaidDebtPositionOverview(data.brokerId, organizationId, data.token);
+  const getDebtorUnpaidDebtPositionOverviewResult = getDebtorUnpaidDebtPositionOverview(data.brokerId, organizationId, data.fiscalCode, data.token);
 
   assert(getDebtorUnpaidDebtPositionOverviewResult, [statusOk()]);
 
