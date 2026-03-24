@@ -43,6 +43,10 @@ parameters:
       - DebtPositionTypeOrg_getDebtPositionTypeOrgsWithSpontaneousDetail
       - DebtPositionTypeOrg_getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear
 
+      - runAll_DebtPosition
+      - DebtPosition_getPagedUnpaidDebtPositions
+      - DebtPosition_getDebtorUnpaidDebtPositionOverview
+
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
@@ -127,8 +131,17 @@ variables:
   
   - name: k6Test_DebtPositionTypeOrg_getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear
     value: debtPositionTypeOrg/getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear.js
-    
 
+  - name: k6Test_runAll_DebtPosition
+    value: debtPosition/
+
+  - name: k6Test_DebtPosition_getPagedUnpaidDebtPositions
+    value: debtPosition/getPagedUnpaidDebtPositions.js
+
+  - name: k6Test_DebtPosition_getDebtorUnpaidDebtPositionOverview
+    value: debtPosition/getDebtorUnpaidDebtPositionOverview.js
+  
+    
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
     value: ${{ variables[format('k6Test_{0}', parameters.SCRIPT)] }}

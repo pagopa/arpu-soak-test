@@ -6,6 +6,7 @@ import papaparse from "https://jslib.k6.io/papaparse/5.1.1/index.js";
 import exec from "k6/execution";
 import { getAuthTokenTestUser, getUserInfo } from "../api/auth.js";
 import { getScenarioTestEntity, logResult } from "./dynamicScenarios/utils.js";
+import { CONFIG } from "./envVars.js";
 
 /** It will return o1 if define, otherwise it will return o2 */
 export function coalesce(o1, o2) {
@@ -31,6 +32,16 @@ export function getAuthToken() {
     abort("Cannot retrieve authTokenTestUser");
   }
   return result.json().accessToken;
+}
+
+/** It will retrieve the TestUser fiscalCode */
+export function getAuthFiscalCode() {
+  const result = getUserInfo();
+  if (result.status !== 200) {
+    logResult(result);
+    abort("Cannot retrieve user info");
+  }
+  return result.json().fiscalCode;
 }
 
 /** Given a list of test entities, it will return 1 of them starting from the first once reached the end */
