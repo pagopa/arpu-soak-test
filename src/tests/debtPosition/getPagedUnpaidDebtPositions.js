@@ -6,7 +6,7 @@ import {
 import defaultHandleSummaryBuilder from "../../common/handleSummaryBuilder.js";
 import { defaultApiOptionsBuilder } from "../../common/dynamicScenarios/defaultOptions.js";
 import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
-import { getAuthToken } from "../../common/utils.js";
+import { getAuthToken, getAuthFiscalCode } from "../../common/utils.js";
 import { CONFIG } from "../../common/envVars.js";
 
 const application = "debtPosition";
