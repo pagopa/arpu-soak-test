@@ -28,16 +28,16 @@ export const handleSummary = defaultHandleSummaryBuilder(application, testName);
 export function setup() {
   const authToken = getAuthToken();
   const brokerId = CONFIG.CONTEXT.BROKER_ID;
-  const debtPositions = getPagedUnpaidDebtPositions(brokerId, authToken).json();
+  const debtPositions = getPagedUnpaidDebtPositions(brokerId, authToken).json().content;
 
-  if(!debtPositions?.content?.length){
+  if(debtPositions.length === 0){
     abort("No elements found in debtPositions list please restart test with at least one element");
   }
 
   return {
     brokerId: brokerId,
     token: authToken,
-    debtPositions: debtPositions.content.map(item => item.organizationId)
+    debtPositions: debtPositions.map(item => item.organizationId)
   };
 
 }

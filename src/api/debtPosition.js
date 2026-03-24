@@ -15,8 +15,9 @@ const xFiscalCode = getAuthFiscalCode();
 export function getPagedUnpaidDebtPositions(brokerId, token) {
     const apiName = DEBT_POSITION_API_NAMES.getPagedUnpaidDebtPositions;
     const params = buildDefaultParams(apiName, token);
-    params.headers = {...params.headers, 
-        "X-fiscal-code" : xFiscalCode};
+    Object.assign(params.headers, { 
+        "X-fiscal-code": xFiscalCode 
+    });
 
     const res = http.get(`${baseUrl}/brokers/${brokerId}/debt-positions/unpaid`, params);
 
@@ -27,10 +28,10 @@ export function getPagedUnpaidDebtPositions(brokerId, token) {
 export function getDebtorUnpaidDebtPositionOverview(brokerId, organizationId, token) {
     const apiName = DEBT_POSITION_API_NAMES.getPagedUnpaidDebtPositions;
     const params = buildDefaultParams(apiName, token);
-    params.headers = {...params.headers, 
-        "X-fiscal-code" : xFiscalCode,
-        "organizationId" : organizationId
-    };
+    Object.assign(params.headers, { 
+        "X-fiscal-code": xFiscalCode, 
+        "organizationId" : organizationId 
+    });
 
     const res = http.get(`${baseUrl}/brokers/${brokerId}/debt-positions/debtor/unpaid/${debtPositionId}/overview`, params);
 
