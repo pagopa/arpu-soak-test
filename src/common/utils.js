@@ -35,8 +35,8 @@ export function getAuthToken() {
 }
 
 /** It will retrieve the TestUser fiscalCode */
-export function getAuthFiscalCode() {
-  const result = getUserInfo();
+export function getAuthFiscalCode(authToken) {
+  const result = getUserInfo(authToken);
   if (result.status !== 200) {
     logResult(result);
     abort("Cannot retrieve user info");
