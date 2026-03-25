@@ -29,17 +29,6 @@ export function setup() {
   const xFiscalCode = getAuthFiscalCode(authToken);
   const brokerId = CONFIG.CONTEXT.BROKER_ID;
 
-  const isCie = CONFIG.CONTEXT.CREATE_DEBT_POSITION_CIE === "true";
-
-  if (isCie) {
-    return {
-      brokerId,
-      token: authToken,
-      isCie,
-      fiscalCode: xFiscalCode
-    };
-  }
-
   const organizations = getOrganizationsWithSpontaneous(brokerId, authToken).json();
 
   if (organizations.length === 0) {
@@ -63,39 +52,18 @@ export function setup() {
     token: authToken,
     organizationId,
     debtPositionTypeOrgs: debtPositionTypeOrgs.map(item => item.debtPositionTypeOrgId),
-    isCie,
     fiscalCode: xFiscalCode
   };
 }
 
 export default (data) => {
-  let res;
+  const debtPositionTypeOrgId = getTestEntity(data.debtPositionTypeOrgs);
 
-  if (data.isCie) {
-    res = createSpontaneousDebtPosition(
-      data.brokerId,
-      null,
-      null,
-      true,
-      data.fiscalCode,
-      data.token
-    );
-  } else {
-    const debtPositionTypeOrgId = getTestEntity(data.debtPositionTypeOrgs);
+  const createSpontaneousDebtPositionResult = createSpontaneousDebtPosition(data.brokerId, data.organizationId, debtPositionTypeOrgId, data.fiscalCode, data.token);
 
-    res = createSpontaneousDebtPosition(
-      data.brokerId,
-      data.organizationId,
-      debtPositionTypeOrgId,
-      false,
-      data.fiscalCode,
-      data.token
-    );
-  }
+  assert(createSpontaneousDebtPositionResult, [statusOk()]);
 
-  assert(res, [statusOk()]);
-
-  if (res.status !== 200) {
-    logErrorResult(`Unexpected ${testName} status`, res, true);
+  if (createSpontaneousDebtPositionResult.status !== 200) {
+    logErrorcreateSpontaneousDebtPositionResultult(`Unexpected ${testName} status`, createSpontaneousDebtPositionResult, true);
   }
 };

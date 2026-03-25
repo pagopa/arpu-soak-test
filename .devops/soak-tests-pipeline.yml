@@ -49,16 +49,12 @@ parameters:
       - DebtPosition_getUnpaidPaymentNoticeZip
       - DebtPosition_getPaymentNotice
       - DebtPosition_createSpontaneousDebtPosition
+      - DebtPosition_createSpontaneousDebtPositionCie
       - DebtPosition_getDebtPositionDetail
 
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
-
-  - name: "CREATE_DEBT_POSITION_CIE"
-    displayName: "Create debt position cie"
-    type: boolean
-    default: false
 
   - name: "SCENARIO"
     displayName: "Soak test type"
@@ -155,9 +151,12 @@ variables:
   
   - name: k6Test_DebtPosition_getPaymentNotice
     value: debtPosition/getPaymentNotice.js
-    
+
   - name: k6Test_DebtPosition_createSpontaneousDebtPosition
     value: debtPosition/createSpontaneousDebtPosition.js
+
+  - name: k6Test_DebtPosition_createSpontaneousDebtPositionCie
+    value: debtPosition/createSpontaneousDebtPositionCie.js
   
   - name: k6Test_DebtPosition_getDebtPositionDetail
     value: debtPosition/getDebtPositionDetail.js
@@ -222,7 +221,6 @@ jobs:
                       -e THRESHOLDS_API_MAX_P95_MS_ENV=${{ parameters.THRESHOLDS_API_MAX_P95_MS_ENV }} \
                       \
                       -e BROKER_ID=${{ parameters.BROKER_ID }} \
-                      -e CREATE_DEBT_POSITION_CIE=${{parameters.CREATE_DEBT_POSITION_CIE}}\
                       --entrypoint /app/runAll.sh \
                       grafana/k6:latest \
                       ${{ parameters.TARGET_ENV }} ${{k6Test}}
