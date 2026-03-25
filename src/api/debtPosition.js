@@ -32,11 +32,10 @@ export function getDebtorUnpaidDebtPositionOverview(brokerId, organizationId, de
     const apiName = DEBT_POSITION_API_NAMES.getPagedUnpaidDebtPositions;
     const params = buildDefaultParams(apiName, token);
     Object.assign(params.headers, { 
-        "X-fiscal-code": fiscalCode, 
-        "organizationId" : organizationId 
+        "X-fiscal-code": fiscalCode
     });
 
-    const res = http.get(`${baseUrl}/brokers/${brokerId}/debt-positions/debtor/unpaid/${debtPositionId}/overview`, params);
+    const res = http.get(`${baseUrl}/brokers/${brokerId}/debt-positions/debtor/unpaid/${debtPositionId}/overview?organizationId=${organizationId}`, params);
 
     logResult(apiName, res);
     return res;
