@@ -27,7 +27,7 @@ export const handleSummary = defaultHandleSummaryBuilder(application, testName);
 
 export function setup() {
   const authToken = getAuthToken();
-  const xFiscalCode = getAuthFiscalCode();
+  const xFiscalCode = getAuthFiscalCode(authToken);
   const brokerId = CONFIG.CONTEXT.BROKER_ID;
   const debtPositions = getPagedUnpaidDebtPositions(brokerId, xFiscalCode, authToken).json().content;
 
