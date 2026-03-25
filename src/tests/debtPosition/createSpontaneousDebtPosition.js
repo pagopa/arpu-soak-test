@@ -1,0 +1,101 @@
+import { assert, statusOk } from "../../common/assertions.js";
+import {
+  createSpontaneousDebtPosition,
+  DEBT_POSITION_API_NAMES
+} from "../../api/debtPosition.js";
+import defaultHandleSummaryBuilder from "../../common/handleSummaryBuilder.js";
+import { defaultApiOptionsBuilder } from "../../common/dynamicScenarios/defaultOptions.js";
+import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
+import { getAuthToken, getRandom, getTestEntity, abort, getAuthFiscalCode } from "../../common/utils.js";
+import { CONFIG } from "../../common/envVars.js";
+import { getOrganizationsWithSpontaneous } from "../../api/organization.js";
+import { getDebtPositionTypeOrgsWithSpontaneous } from "../../api/debtPositionTypeOrg.js";
+
+const application = "debtPosition";
+const testName = "createSpontaneousDebtPosition";
+
+// K6 options
+export const options = defaultApiOptionsBuilder(
+  application,
+  testName,
+  [DEBT_POSITION_API_NAMES.createSpontaneousDebtPosition]
+);
+
+// Summary
+export const handleSummary = defaultHandleSummaryBuilder(application, testName);
+
+export function setup() {
+  const authToken = getAuthToken();
+  const xFiscalCode = getAuthFiscalCode(authToken);
+  const brokerId = CONFIG.CONTEXT.BROKER_ID;
+
+  const isCie = CONFIG.CONTEXT.CREATE_DEBT_POSITION_CIE === "true";
+
+  if (isCie) {
+    return {
+      brokerId,
+      token: authToken,
+      isCie,
+      fiscalCode: xFiscalCode
+    };
+  }
+
+  const organizations = getOrganizationsWithSpontaneous(brokerId, authToken).json();
+
+  if (organizations.length === 0) {
+    abort("No elements found in organizations list");
+  }
+
+  const organizationId = getRandom(organizations.map(item => item.organizationId));
+
+  const debtPositionTypeOrgs = getDebtPositionTypeOrgsWithSpontaneous(
+    brokerId,
+    organizationId,
+    authToken
+  ).json();
+
+  if (debtPositionTypeOrgs.length === 0) {
+    abort("No elements found in debtPositionTypeOrg list");
+  }
+
+  return {
+    brokerId,
+    token: authToken,
+    organizationId,
+    debtPositionTypeOrgs: debtPositionTypeOrgs.map(item => item.debtPositionTypeOrgId),
+    isCie,
+    fiscalCode: xFiscalCode
+  };
+}
+
+export default (data) => {
+  let res;
+
+  if (data.isCie) {
+    res = createSpontaneousDebtPosition(
+      data.brokerId,
+      null,
+      null,
+      true,
+      data.fiscalCode,
+      data.token
+    );
+  } else {
+    const debtPositionTypeOrgId = getTestEntity(data.debtPositionTypeOrgs);
+
+    res = createSpontaneousDebtPosition(
+      data.brokerId,
+      data.organizationId,
+      debtPositionTypeOrgId,
+      false,
+      data.fiscalCode,
+      data.token
+    );
+  }
+
+  assert(res, [statusOk()]);
+
+  if (res.status !== 200) {
+    logErrorResult(`Unexpected ${testName} status`, res, true);
+  }
+};
