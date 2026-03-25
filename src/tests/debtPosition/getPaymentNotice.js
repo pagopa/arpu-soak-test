@@ -37,7 +37,9 @@ export function setup() {
     abort("No elements found in debtPositions list please restart test with at least one element");
   }
 
-  const organizationId = getRandom(debtPositions.map(item => item.organizationId));
+  const organizationIdMap = debtPositions.map(item => item.organizationId);
+
+  const organizationId = getRandom(organizationIdMap);
 
   const overview = getDebtorUnpaidDebtPositionOverview(brokerId, organizationId, xFiscalCode, authToken).json();
 
