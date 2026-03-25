@@ -27,7 +27,7 @@ export function getPagedUnpaidDebtPositions(brokerId, fiscalCode, token) {
     return res;
 }
 
-export function getDebtorUnpaidDebtPositionOverview(brokerId, organizationId, fiscalCode, token) {
+export function getDebtorUnpaidDebtPositionOverview(brokerId, organizationId, debtPositionId, fiscalCode, token) {
     const apiName = DEBT_POSITION_API_NAMES.getPagedUnpaidDebtPositions;
     const params = buildDefaultParams(apiName, token);
     Object.assign(params.headers, { 

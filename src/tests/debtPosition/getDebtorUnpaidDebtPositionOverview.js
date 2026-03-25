@@ -38,15 +38,15 @@ export function setup() {
   return {
     brokerId: brokerId,
     token: authToken,
-    debtPositions: debtPositions.map(item => item.organizationId),
+    debtPositions: debtPositions,
     fiscalCode: xFiscalCode
   };
 
 }
 
 export default (data) => {
-  const organizationId = getTestEntity(data.debtPositions);
-  const getDebtorUnpaidDebtPositionOverviewResult = getDebtorUnpaidDebtPositionOverview(data.brokerId, organizationId, data.fiscalCode, data.token);
+  const debtPosition = getTestEntity(data.debtPositions);
+  const getDebtorUnpaidDebtPositionOverviewResult = getDebtorUnpaidDebtPositionOverview(data.brokerId, debtPosition.organizationId, debtPosition.debtPositionId, data.fiscalCode, data.token);
 
   assert(getDebtorUnpaidDebtPositionOverviewResult, [statusOk()]);
 
