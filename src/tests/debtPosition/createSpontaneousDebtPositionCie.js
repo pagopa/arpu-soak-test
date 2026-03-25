@@ -41,6 +41,6 @@ export default (data) => {
   assert(createSpontaneousDebtPositionCieResult, [statusOk()]);
 
   if (createSpontaneousDebtPositionCieResult.status !== 200) {
-    logErrorcreateSpontaneousDebtPositionCieResultult(`Unexpected ${testName} status`, createSpontaneousDebtPositionCieResult, true);
+    logErrorResult(`Unexpected ${testName} status`, createSpontaneousDebtPositionCieResult, true);
   }
 };
