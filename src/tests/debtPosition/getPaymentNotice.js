@@ -40,15 +40,16 @@ export function setup() {
   const debtPosition = getRandom(debtPositions);
 
   const overview = getDebtorUnpaidDebtPositionOverview(brokerId, debtPosition.organizationId, debtPosition.debtPositionId, xFiscalCode, authToken).json();
+  const paymentOptions = overview.paymentOptions;
 
-  if (overview.paymentOptions.length === 0) {
+  if (paymentOptions.length === 0) {
     abort("No paymentOptions found");
   }
 
   return {
     brokerId,
     organizationId: debtPosition.organizationId,
-    paymentOptions: overview.paymentOptions,
+    paymentOptions: paymentOptions,
     token: authToken,
     fiscalCode: xFiscalCode
   };
@@ -56,13 +57,14 @@ export function setup() {
 
 export default (data) => {
   const paymentOption = getTestEntity(data.paymentOptions);
+  const installments = paymentOption.installments;
 
-  if (paymentOption.installments.length === 0) {
+  if (installments.length === 0) {
     logErrorResult("No installments found", paymentOption, true);
     return;
   }
 
-  const installment = getTestEntity(paymentOption.installments);
+  const installment = getTestEntity(installments);
 
   if (installment.nav == null) {
     logErrorResult("Missing nav in installment", installment, true);
