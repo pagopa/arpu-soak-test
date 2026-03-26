@@ -43,6 +43,10 @@ parameters:
       - DebtPositionTypeOrg_getDebtPositionTypeOrgsWithSpontaneousDetail
       - DebtPositionTypeOrg_getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear
 
+      - runAll_Installment
+      - Installment_getDebtorUnpaidDebtPositionInstallments
+      - Installment_getPublicInstallmentsByIuvOrNav
+
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
@@ -127,7 +131,15 @@ variables:
   
   - name: k6Test_DebtPositionTypeOrg_getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear
     value: debtPositionTypeOrg/getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear.js
+
+  - name: k6Test_runAll_Installment
+    value: installment
+
+  - name: k6Test_Installment_getDebtorUnpaidDebtPositionInstallments
+    value: installment/getDebtorUnpaidDebtPositionInstallments.js
     
+  - name: k6Test_Installment_getPublicInstallmentsByIuvOrNav
+    value: installment/getPublicInstallmentsByIuvOrNav.js
 
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
