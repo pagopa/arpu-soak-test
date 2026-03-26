@@ -9,7 +9,7 @@ import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
 import { getAuthToken, getRandom, getTestEntity, abort, getAuthFiscalCode } from "../../common/utils.js";
 import { CONFIG } from "../../common/envVars.js";
 import { getOrganizationsWithSpontaneous } from "../../api/organization.js";
-import { getDebtPositionTypeOrgsWithSpontaneous } from "../../api/debtPositionTypeOrg.js";
+import { getDebtPositionTypeOrgsWithSpontaneous, getDebtPositionTypeOrgsWithSpontaneousDetail } from "../../api/debtPositionTypeOrg.js";
 
 const application = "debtPosition";
 const testName = "createSpontaneousDebtPosition";
@@ -47,27 +47,38 @@ export function setup() {
     abort("No elements found in debtPositionTypeOrg list");
   }
 
-  const validDebtPositionTypeOrgs = debtPositionTypeOrgs.filter(
-    dpto => dpto.amountCents == null
-  );
+  let selectedDpto = null;
 
-  if (validDebtPositionTypeOrgs.length === 0) {
-  abort("No debtPositionTypeOrg found with amountCents null");
+  for (const dpto of debtPositionTypeOrgs) {
+    const detail = getDebtPositionTypeOrgsWithSpontaneousDetail(
+      brokerId,
+      organizationId,
+      dpto.debtPositionTypeOrgId,
+      authToken
+    ).json();
+
+    if (detail == null) {
+      continue;
   }
+
+  if (detail.amountCents == null) {
+    selectedDpto = dpto;
+    break;
+  }
+}
 
   return {
     brokerId,
     token: authToken,
     organizationId,
-    debtPositionTypeOrgs: validDebtPositionTypeOrgs.map(item => item.debtPositionTypeOrgId),
+    debtPositionTypeOrgId: selectedDpto.debtPositionTypeOrgId,
     fiscalCode: xFiscalCode
   };
 }
 
 export default (data) => {
-  const debtPositionTypeOrgId = getTestEntity(data.debtPositionTypeOrgs);
 
-  const createSpontaneousDebtPositionResult = createSpontaneousDebtPosition(data.brokerId, data.organizationId, debtPositionTypeOrgId, data.fiscalCode, data.token);
+  const createSpontaneousDebtPositionResult = createSpontaneousDebtPosition(data.brokerId, data.organizationId, data.debtPositionTypeOrgId, data.fiscalCode, data.token);
 
   assert(createSpontaneousDebtPositionResult, [statusOk()]);
 
