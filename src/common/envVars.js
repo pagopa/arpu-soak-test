@@ -82,7 +82,7 @@ export const CONFIG = {
 
   CONTEXT: {
     BROKER_ID: parseInt(__ENV.BROKER_ID),
-    ORGANIZATION_ID_CIE: __ENV.TARGET_ENV === "DEV" ? 83 : 19
+    IPZS_ORGANIZATION_FISCAL_CODE: "00399810589"
   }
 
 };

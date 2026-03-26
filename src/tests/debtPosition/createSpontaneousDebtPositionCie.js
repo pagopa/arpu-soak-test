@@ -9,6 +9,7 @@ import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
 import { getAuthToken, getAuthFiscalCode, getTestEntity } from "../../common/utils.js";
 import { CONFIG } from "../../common/envVars.js";
 import { getDebtPositionTypeOrgsWithSpontaneous } from "../../api/debtPositionTypeOrg.js";
+import { getOrganizationsWithSpontaneous } from "../../api/organization.js";
 
 
 const application = "debtPosition";
@@ -29,9 +30,23 @@ export function setup() {
   const xFiscalCode = getAuthFiscalCode(authToken);
   const brokerId = CONFIG.CONTEXT.BROKER_ID;
 
+  const organizations = getOrganizationsWithSpontaneous(brokerId, authToken).json();
+  
+  if (organizations.length === 0) {
+    abort("No elements found in organizations list");
+  }
+  
+  const organization = organizations.find(
+  o => o.orgFiscalCode == CONFIG.CONTEXT.IPZS_ORGANIZATION_FISCAL_CODE
+  );
+
+  if (organization == null) {
+    abort("No organization found with given fiscal code");
+  }
+  
   const debtPositionTypeOrgs = getDebtPositionTypeOrgsWithSpontaneous(
       brokerId,
-      CONFIG.CONTEXT.ORGANIZATION_ID_CIE,
+      organization.organizationId,
       authToken
     ).json();
   

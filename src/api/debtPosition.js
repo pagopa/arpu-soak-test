@@ -2,7 +2,7 @@ import http from "k6/http";
 import { logResult } from "../common/dynamicScenarios/utils.js";
 import { getBaseUrl } from "../common/environment.js"
 import { buildDefaultParams } from "../common/envVars.js";
-import { buildDebtPositionPayload, buildDebtPositionPayloadCie } from "../common/utils.js";
+import { buildDebtPositionPayload, buildDebtPositionPayloadCie } from "../common/debtPositionUtils.js"
 
 export const DEBT_POSITION_API_NAMES = {
     getPagedUnpaidDebtPositions: "debtPosition/getPagedUnpaidDebtPositions",
