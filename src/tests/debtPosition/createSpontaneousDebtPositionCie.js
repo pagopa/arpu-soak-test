@@ -18,7 +18,7 @@ const testName = "createSpontaneousDebtPositionCie";
 export const options = defaultApiOptionsBuilder(
   application,
   testName,
-  [DEBT_POSITION_API_NAMES.createSpontaneousDebtPosition]
+  [DEBT_POSITION_API_NAMES.createSpontaneousDebtPositionCie]
 );
 
 // Summary
