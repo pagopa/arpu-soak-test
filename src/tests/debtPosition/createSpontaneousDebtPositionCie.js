@@ -8,6 +8,7 @@ import { defaultApiOptionsBuilder } from "../../common/dynamicScenarios/defaultO
 import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
 import { getAuthToken, getAuthFiscalCode, getTestEntity } from "../../common/utils.js";
 import { CONFIG } from "../../common/envVars.js";
+import { getDebtPositionTypeOrgsWithSpontaneous } from "../../api/debtPositionTypeOrg.js";
 
 
 const application = "debtPosition";
