@@ -52,6 +52,10 @@ parameters:
       - DebtPosition_createSpontaneousDebtPositionCie
       - DebtPosition_getDebtPositionDetail
 
+      - runAll_Installment
+      - Installment_getDebtorUnpaidDebtPositionInstallments
+      - Installment_getPublicInstallmentsByIuvOrNav
+
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
@@ -160,7 +164,16 @@ variables:
   
   - name: k6Test_DebtPosition_getDebtPositionDetail
     value: debtPosition/getDebtPositionDetail.js
-    
+
+  - name: k6Test_runAll_Installment
+    value: installment/
+
+  - name: k6Test_Installment_getDebtorUnpaidDebtPositionInstallments
+    value: installment/getDebtorUnpaidDebtPositionInstallments.js
+
+  - name: k6Test_Installment_getPublicInstallmentsByIuvOrNav
+    value: installment/getPublicInstallmentsByIuvOrNav.js
+  
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
     value: ${{ variables[format('k6Test_{0}', parameters.SCRIPT)] }}
