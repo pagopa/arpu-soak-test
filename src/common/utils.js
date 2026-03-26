@@ -166,10 +166,10 @@ export const buildDebtPositionPayload = (organizationId, debtPositionTypeOrgId, 
   };
 };
 
-export const buildDebtPositionPayloadCie = (fiscalCode) => {
+export const buildDebtPositionPayloadCie = (fiscalCode, debtPositionTypeOrgId) => {
   const basePayload = buildDebtPositionPayload(
     CONFIG.CONTEXT.ORGANIZATION_ID_CIE,
-    CONFIG.CONTEXT.DEBT_POSITION_TYPE_ORG_ID_CIE,
+    debtPositionTypeOrgId,
     fiscalCode
   );
   return Object.assign(basePayload, {

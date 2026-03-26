@@ -82,8 +82,7 @@ export const CONFIG = {
 
   CONTEXT: {
     BROKER_ID: parseInt(__ENV.BROKER_ID),
-    ORGANIZATION_ID_CIE: __ENV.TARGET_ENV === "DEV" ? 83 : 19,
-    DEBT_POSITION_TYPE_ORG_ID_CIE: __ENV.TARGET_ENV === "DEV" ? 1328 : 128
+    ORGANIZATION_ID_CIE: __ENV.TARGET_ENV === "DEV" ? 83 : 19
   }
 
 };

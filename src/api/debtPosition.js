@@ -75,10 +75,10 @@ export function createSpontaneousDebtPosition(brokerId, organizationId, debtPosi
   return res;
 }
 
-export function createSpontaneousDebtPositionCie(brokerId, fiscalCode, token) {
+export function createSpontaneousDebtPositionCie(brokerId, fiscalCode, debtPositionTypeOrgId, token) {
   const apiName = DEBT_POSITION_API_NAMES.createSpontaneousDebtPosition;
   const params = buildDefaultParams(apiName, token);
-  const payload = buildDebtPositionPayloadCie(fiscalCode);
+  const payload = buildDebtPositionPayloadCie(fiscalCode, debtPositionTypeOrgId);
 
   const res = http.post(`${baseUrl}/brokers/${brokerId}/spontaneous/debt-positions`, JSON.stringify(payload), params);
   logResult(apiName, res);

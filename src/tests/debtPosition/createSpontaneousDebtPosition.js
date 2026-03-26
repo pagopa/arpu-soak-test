@@ -47,11 +47,19 @@ export function setup() {
     abort("No elements found in debtPositionTypeOrg list");
   }
 
+  const validDebtPositionTypeOrgs = debtPositionTypeOrgs.filter(
+    dpto => dpto.amountCents == null
+  );
+
+  if (validDebtPositionTypeOrgs.length === 0) {
+  abort("No debtPositionTypeOrg found with amountCents null");
+  }
+
   return {
     brokerId,
     token: authToken,
     organizationId,
-    debtPositionTypeOrgs: debtPositionTypeOrgs.map(item => item.debtPositionTypeOrgId),
+    debtPositionTypeOrgs: validDebtPositionTypeOrgs.map(item => item.debtPositionTypeOrgId),
     fiscalCode: xFiscalCode
   };
 }

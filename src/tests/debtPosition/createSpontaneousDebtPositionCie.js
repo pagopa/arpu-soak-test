@@ -6,7 +6,7 @@ import {
 import defaultHandleSummaryBuilder from "../../common/handleSummaryBuilder.js";
 import { defaultApiOptionsBuilder } from "../../common/dynamicScenarios/defaultOptions.js";
 import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
-import { getAuthToken, getAuthFiscalCode } from "../../common/utils.js";
+import { getAuthToken, getAuthFiscalCode, getTestEntity } from "../../common/utils.js";
 import { CONFIG } from "../../common/envVars.js";
 
 
@@ -28,15 +28,27 @@ export function setup() {
   const xFiscalCode = getAuthFiscalCode(authToken);
   const brokerId = CONFIG.CONTEXT.BROKER_ID;
 
+  const debtPositionTypeOrgs = getDebtPositionTypeOrgsWithSpontaneous(
+      brokerId,
+      CONFIG.CONTEXT.ORGANIZATION_ID_CIE,
+      authToken
+    ).json();
+  
+  if (debtPositionTypeOrgs.length === 0) {
+    abort("No elements found in debtPositionTypeOrg list");
+  }
+
   return {
       brokerId,
       token: authToken,
-      fiscalCode: xFiscalCode
+      fiscalCode: xFiscalCode,
+      debtPositionTypeOrgs: debtPositionTypeOrgs.map(item => item.debtPositionTypeOrgId)
   };
 }
 
 export default (data) => {
-  const createSpontaneousDebtPositionCieResult = createSpontaneousDebtPositionCie(data.brokerId, data.fiscalCode, data.token);
+  const debtPositionTypeOrgId = getTestEntity(data.debtPositionTypeOrgs);
+  const createSpontaneousDebtPositionCieResult = createSpontaneousDebtPositionCie(data.brokerId, data.fiscalCode, debtPositionTypeOrgId, data.token);
 
   assert(createSpontaneousDebtPositionCieResult, [statusOk()]);
 
