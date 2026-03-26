@@ -43,6 +43,15 @@ parameters:
       - DebtPositionTypeOrg_getDebtPositionTypeOrgsWithSpontaneousDetail
       - DebtPositionTypeOrg_getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear
 
+      - runAll_DebtPosition
+      - DebtPosition_getPagedUnpaidDebtPositions
+      - DebtPosition_getDebtorUnpaidDebtPositionOverview
+      - DebtPosition_getUnpaidPaymentNoticeZip
+      - DebtPosition_getPaymentNotice
+      - DebtPosition_createSpontaneousDebtPosition
+      - DebtPosition_createSpontaneousDebtPositionCie
+      - DebtPosition_getDebtPositionDetail
+
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
@@ -127,12 +136,35 @@ variables:
   
   - name: k6Test_DebtPositionTypeOrg_getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear
     value: debtPositionTypeOrg/getMostUsedSpontaneousDebtPositionTypeOrgsForCurrentYear.js
-    
+  
+  - name: k6Test_runAll_DebtPosition
+    value: debtPosition/
+ 
+  - name: k6Test_DebtPosition_getPagedUnpaidDebtPositions
+    value: debtPosition/getPagedUnpaidDebtPositions.js
+ 
+  - name: k6Test_DebtPosition_getDebtorUnpaidDebtPositionOverview
+    value: debtPosition/getDebtorUnpaidDebtPositionOverview.js
+  
+  - name: k6Test_DebtPosition_getUnpaidPaymentNoticeZip
+    value: debtPosition/getUnpaidPaymentNoticeZip.js
+  
+  - name: k6Test_DebtPosition_getPaymentNotice
+    value: debtPosition/getPaymentNotice.js
 
+  - name: k6Test_DebtPosition_createSpontaneousDebtPosition
+    value: debtPosition/createSpontaneousDebtPosition.js
+
+  - name: k6Test_DebtPosition_createSpontaneousDebtPositionCie
+    value: debtPosition/createSpontaneousDebtPositionCie.js
+  
+  - name: k6Test_DebtPosition_getDebtPositionDetail
+    value: debtPosition/getDebtPositionDetail.js
+    
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
     value: ${{ variables[format('k6Test_{0}', parameters.SCRIPT)] }}
-
+  
   # Setting env specific settings
   - ${{ if eq(parameters.TARGET_ENV, 'dev') }}:
       - name: selfHostedAgentPool
@@ -162,11 +194,11 @@ jobs:
             - checkout: self
               displayName: Checkout
               fetchDepth: 1
-
+            
             - script: |
                 docker pull grafana/k6:latest
               displayName: Pull k6 image
-
+            
             - ${{ each k6Test in split(variables.SCRIPTS_TO_EXECUTE, ',') }}:
                 - script: |
                     chmod +x runAll.sh
@@ -194,7 +226,7 @@ jobs:
                       ${{ parameters.TARGET_ENV }} ${{k6Test}}
                   condition: true
                   displayName: Run k6 ${{k6Test}} on ${{ parameters.TARGET_ENV }}
-
+            
             - task: PublishTestResults@2
               condition: true
               displayName: "Publishing test results"

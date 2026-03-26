@@ -33,6 +33,16 @@ export function getAuthToken() {
   return result.json().accessToken;
 }
 
+/** It will retrieve the TestUser fiscalCode */
+export function getAuthFiscalCode(authToken) {
+  const result = getUserInfo(authToken);
+  if (result.status !== 200) {
+    logResult(result);
+    abort("Cannot retrieve user info");
+  }
+  return result.json().fiscalCode;
+}
+
 /** Given a list of test entities, it will return 1 of them starting from the first once reached the end */
 export function getTestEntity(testEntities) {
   return getScenarioTestEntity(testEntities);
