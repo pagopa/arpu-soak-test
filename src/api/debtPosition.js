@@ -10,6 +10,7 @@ export const DEBT_POSITION_API_NAMES = {
     getUnpaidPaymentNoticeZip: "debtPosition/getUnpaidPaymentNoticeZip",
     getPaymentNotice: "debtPosition/getPaymentNotice",
     createSpontaneousDebtPosition: "debtPosition/createSpontaneousDebtPosition",
+    createSpontaneousDebtPositionCie: "debtPosition/createSpontaneousDebtPositionCie",
     getDebtPositionDetail: "debtPosition/getDebtPositionDetail",
 }
 
@@ -76,7 +77,7 @@ export function createSpontaneousDebtPosition(brokerId, organizationId, debtPosi
 }
 
 export function createSpontaneousDebtPositionCie(brokerId, fiscalCode, debtPositionTypeOrgId, token) {
-  const apiName = DEBT_POSITION_API_NAMES.createSpontaneousDebtPosition;
+  const apiName = DEBT_POSITION_API_NAMES.createSpontaneousDebtPositionCie;
   const params = buildDefaultParams(apiName, token);
   const payload = buildDebtPositionPayloadCie(fiscalCode, debtPositionTypeOrgId);
 
