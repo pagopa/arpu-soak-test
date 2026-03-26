@@ -51,7 +51,8 @@ export function setup() {
 
   return {
     brokerId,
-    paymentOptions: overview.paymentOptions
+    paymentOptions: overview.paymentOptions,
+    fiscalCode: xFiscalCode
   };
 }
 
@@ -72,7 +73,7 @@ export default (data) => {
     return;
   }
 
-  const getPublicInstallmentsByIuvOrNavResult = getPublicInstallmentsByIuvOrNav(data.brokerId, iuvOrNav);
+  const getPublicInstallmentsByIuvOrNavResult = getPublicInstallmentsByIuvOrNav(data.brokerId, iuvOrNav, data.fiscalCode);
 
   assert(getPublicInstallmentsByIuvOrNavResult, [statusOk()]);
 

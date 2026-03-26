@@ -20,9 +20,12 @@ export function getDebtorUnpaidDebtPositionInstallments(brokerId, debtPositionId
     return res;
 }
 
-export function getPublicInstallmentsByIuvOrNav(brokerId, iuvOrNav) {
+export function getPublicInstallmentsByIuvOrNav(brokerId, iuvOrNav, fiscalCode) {
     const apiName = INSTALLMENT_API_NAMES.getPublicInstallmentsByIuvOrNav;
     const params = buildDefaultParams(apiName);
+    Object.assign(params.headers, { 
+        "X-fiscal-code": fiscalCode 
+    });
 
     const res = http.get(`${baseUrl}/public/brokers/${brokerId}/installments?iuvOrNav=${iuvOrNav}`, params);
 
