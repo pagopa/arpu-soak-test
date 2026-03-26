@@ -46,8 +46,9 @@ export function setup() {
 
 export default (data) => {
   const debtPosition = getTestEntity(data.debtPositions);
+  const paymentOption = getTestEntity(debtPosition.paymentOptions);
 
-  const getDebtorUnpaidDebtPositionInstallmentsResult = getDebtorUnpaidDebtPositionInstallments(data.brokerId, debtPosition.debtPositionId, debtPosition.paymentOptionId, debtPosition.organizationId);
+  const getDebtorUnpaidDebtPositionInstallmentsResult = getDebtorUnpaidDebtPositionInstallments(data.brokerId, debtPosition.debtPositionId, paymentOption.paymentOptionId, debtPosition.organizationId);
 
   assert(getDebtorUnpaidDebtPositionInstallmentsResult, [statusOk()]);
 

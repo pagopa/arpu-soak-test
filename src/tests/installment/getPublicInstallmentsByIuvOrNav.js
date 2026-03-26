@@ -67,7 +67,7 @@ export default (data) => {
 
   const iuvOrNav = coalesce(installment.nav, installment.iuv)
 
-  if (iuvOrNav) {
+  if (iuvOrNav == null) {
     logErrorResult("Missing navOrIuv in installment", installment, true);
     return;
   }
