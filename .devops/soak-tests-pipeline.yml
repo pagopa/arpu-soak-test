@@ -173,7 +173,7 @@ variables:
 
   - name: k6Test_Installment_getPublicInstallmentsByIuvOrNav
     value: installment/getPublicInstallmentsByIuvOrNav.js
-    
+  
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
     value: ${{ variables[format('k6Test_{0}', parameters.SCRIPT)] }}
