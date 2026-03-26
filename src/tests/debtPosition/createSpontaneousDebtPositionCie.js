@@ -43,10 +43,11 @@ export function setup() {
   if (organization == null) {
     abort("No organization found with given fiscal code");
   }
-  
+
+  const organizationId = organization.organizationId;
   const debtPositionTypeOrgs = getDebtPositionTypeOrgsWithSpontaneous(
       brokerId,
-      organization.organizationId,
+      organizationId,
       authToken
     ).json();
   
@@ -58,13 +59,14 @@ export function setup() {
       brokerId,
       token: authToken,
       fiscalCode: xFiscalCode,
-      debtPositionTypeOrgs: debtPositionTypeOrgs.map(item => item.debtPositionTypeOrgId)
+      debtPositionTypeOrgs: debtPositionTypeOrgs.map(item => item.debtPositionTypeOrgId),
+      organizationId
   };
 }
 
 export default (data) => {
   const debtPositionTypeOrgId = getTestEntity(data.debtPositionTypeOrgs);
-  const createSpontaneousDebtPositionCieResult = createSpontaneousDebtPositionCie(data.brokerId, data.fiscalCode, debtPositionTypeOrgId, data.token);
+  const createSpontaneousDebtPositionCieResult = createSpontaneousDebtPositionCie(data.brokerId, data.organizationId, debtPositionTypeOrgId, data.fiscalCode, data.token);
 
   assert(createSpontaneousDebtPositionCieResult, [statusOk()]);
 
