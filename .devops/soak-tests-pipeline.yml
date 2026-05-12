@@ -56,6 +56,12 @@ parameters:
       - Installment_getDebtorUnpaidDebtPositionInstallments
       - Installment_getPublicInstallmentsByIuvOrNav
 
+      - runAll_Receipt
+      - Receipt_getPagedDebtorReceipts
+      - Receipt_getDebtorReceipts
+      - Receipt_getReceiptDetail
+      - Receipt_getReceiptPdf
+
   - name: "BROKER_ID"
     displayName: "Broker ID"
     type: string
@@ -173,7 +179,22 @@ variables:
 
   - name: k6Test_Installment_getPublicInstallmentsByIuvOrNav
     value: installment/getPublicInstallmentsByIuvOrNav.js
+
+  - name: k6Test_runAll_Receipt
+    value: receipt/
   
+  - name: k6Test_Receipt_getPagedDebtorReceipts
+    value: receipt/getPagedDebtorReceipts.js
+
+  - name: k6Test_Receipt_getDebtorReceipts
+    value: receipt/getDebtorReceipts.js
+
+  - name: k6Test_Receipt_getReceiptDetail
+    value: receipt/getReceiptDetail.js
+
+  - name: k6Test_Receipt_getReceiptPdf
+    value: receipt/getReceiptPdf.js
+
   # Resolved list of k6 script to execute
   - name: SCRIPTS_TO_EXECUTE
     value: ${{ variables[format('k6Test_{0}', parameters.SCRIPT)] }}
