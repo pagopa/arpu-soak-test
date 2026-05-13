@@ -203,10 +203,19 @@ variables:
   - ${{ if eq(parameters.TARGET_ENV, 'dev') }}:
       - name: selfHostedAgentPool
         value: $(DEV_AGENT_POOL)
+      - name: azureServiceConnectionName
+        value: $(DEV_AZURE_SERVICE_CONNECTION_NAME)
+      - name: keyVaultName
+        value: $(DEV_KV_NAME)
+
   - ${{ else }}:
       - name: selfHostedAgentPool
         value: $(UAT_AGENT_POOL)
-
+      - name: azureServiceConnectionName
+        value: $(UAT_AZURE_SERVICE_CONNECTION_NAME)
+      - name: keyVaultName
+        value: $(UAT_KV_NAME)
+        
   # Decoding scenario type
   - ${{ if eq(parameters.SCENARIO, 'Fixed TPS') }}:
       - name: SCENARIO_TYPE_ENV
@@ -228,7 +237,61 @@ jobs:
             - checkout: self
               displayName: Checkout
               fetchDepth: 1
-            
+
+            - task: AzureCLI@2
+              name: fetchSecretFromKeyVault
+              displayName: 'Fetch Secret from Key Vault using Azure CLI'
+              inputs:
+                azureSubscription: '${{ variables.azureServiceConnectionName }}'
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                  echo "🔐 Fetching secret from Key Vault..."
+
+                  # Create directory for secrets file
+                  mkdir -p $(Pipeline.Workspace)/feature-test
+
+                  # Fetch secret and save to file
+                  az keyvault secret show \
+                    --name "feature-test-environment" \
+                    --vault-name "${{ variables.keyVaultName }}" \
+                    --query 'value' -o json | jq -r '.' > $(Pipeline.Workspace)/feature-test/environment.json
+
+                  if [ $? -ne 0 ]; then
+                    echo "##[error]Failed to fetch secret from Key Vault"
+                    exit 1
+                  fi
+
+                  if [ ! -s $(Pipeline.Workspace)/feature-test/environment.json ]; then
+                    echo "##[error]Secret file is empty"
+                    exit 1
+                  fi
+
+                  # Validate JSON format
+                  if ! jq empty $(Pipeline.Workspace)/feature-test/environment.json 2>/dev/null; then
+                    echo "##[error]Invalid JSON format in secrets file"
+                    echo "File size: $(wc -c < $(Pipeline.Workspace)/feature-test/environment.json) bytes"
+                    echo "Line count: $(wc -l < $(Pipeline.Workspace)/feature-test/environment.json)"
+                    exit 1
+                  fi
+
+                  echo "##vso[task.setvariable variable=secretFilePath]$(Pipeline.Workspace)/feature-test/environment.json"
+                  echo "✅ Secrets fetched and validated successfully"
+
+            - script: |
+                function extractSecret() {
+                SECRET_KEY=$1
+                ENV_NAME=$2
+                VALUE=$(jq -r ".values [] | select(.key==\"$SECRET_KEY\") | .value"  $(secretFilePath))
+                echo "##vso[task.setvariable variable=$ENV_NAME]$VALUE"
+                }
+
+                extractSecret "psp_id" PSP_ID_ENV
+                extractSecret "psp_id_broker" PSP_ID_BROKER_ENV
+                extractSecret "psp_id_channel" PSP_ID_CHANNEL_ENV
+                extractSecret "psp_password" PSP_PASSWORD_ENV
+              displayName: Read secrets
+
             - script: |
                 docker pull grafana/k6:latest
               displayName: Pull k6 image
@@ -255,6 +318,12 @@ jobs:
                       -e THRESHOLDS_API_MAX_P95_MS_ENV=${{ parameters.THRESHOLDS_API_MAX_P95_MS_ENV }} \
                       \
                       -e BROKER_ID=${{ parameters.BROKER_ID }} \
+                      \
+                      -e PSP_ID=$(PSP_ID_ENV) \
+                      -e PSP_ID_BROKER=$(PSP_ID_BROKER_ENV) \
+                      -e PSP_ID_CHANNEL=$(PSP_ID_CHANNEL_ENV) \
+                      -e PSP_PASSWORD=$(PSP_PASSWORD_ENV) \
+                      \
                       --entrypoint /app/runAll.sh \
                       grafana/k6:latest \
                       ${{ parameters.TARGET_ENV }} ${{k6Test}}
