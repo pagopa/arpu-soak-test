@@ -7,8 +7,9 @@ import {
 import defaultHandleSummaryBuilder from "../../common/handleSummaryBuilder.js";
 import { defaultApiOptionsBuilder } from "../../common/dynamicScenarios/defaultOptions.js";
 import { logErrorResult } from "../../common/dynamicScenarios/utils.js";
-import { getAuthToken, getTestEntity, abort } from "../../common/utils.js";
+import { getAuthToken, getTestEntity, abort, getAuthUserInfo } from "../../common/utils.js";
 import { CONFIG } from "../../common/envVars.js";
+import { seedsReceipts } from "../../common/receiptUtils.js";
 
 const application = "receipt";
 const testName = "getReceiptPdf";
@@ -27,7 +28,10 @@ export const handleSummary = defaultHandleSummaryBuilder(application, testName);
 
 export function setup() {
     const authToken = getAuthToken();
+    const userInfo = getAuthUserInfo(authToken);
     const brokerId = CONFIG.CONTEXT.BROKER_ID;
+    
+    seedsReceipts(brokerId, authToken, userInfo);
     
     const receipts = getPagedDebtorReceipts(brokerId, authToken).json().content;
     

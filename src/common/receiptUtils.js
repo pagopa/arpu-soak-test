@@ -1,0 +1,51 @@
+import { getOrganizationsWithSpontaneous } from "../api/organization";
+import { createSpontaneousDebtPosition } from "../api/debtPosition";
+import { CONFIG } from "../common/envVars.js"
+import { abort } from "../common/utils.js";
+import { getDebtPositionTypeOrgsWithSpontaneous } from "../api/debtPositionTypeOrg";
+import { activatePaymentNotice, sendPaymentOutcome, verifyPaymentNotice } from "../api/soap/nodo";
+import { extractXmlValue } from "./xml";
+
+export function seedsReceipts(brokerId, authToken, userInfo) {
+    const organizations = getOrganizationsWithSpontaneous(brokerId, authToken).json();
+
+    if (organizations.length === 0) {
+        abort("No elements found in organizations list");
+    }
+
+    const pspInfo = {
+        id: CONFIG.PSP.ID,
+        id_broker: CONFIG.PSP.ID_BROKER,
+        id_channel: CONFIG.PSP.ID_CHANNEL,
+        password: CONFIG.PSP.PASSWORD
+    };
+
+    organizations.forEach(organization => {
+        const debtPositionTypeOrgs = getDebtPositionTypeOrgsWithSpontaneous(brokerId, organization.organizationId, authToken).json();
+
+        debtPositionTypeOrgs
+            .filter(debtPositionTypeOrg => debtPositionTypeOrg.debtPositionTypeId > 0)
+            .forEach(debtPositionTypeOrg => {
+                const debtPosition = createSpontaneousDebtPosition(
+                    brokerId, 
+                    organization.organizationId, 
+                    debtPositionTypeOrg.debtPositionTypeOrgId, 
+                    userInfo.fiscalCode, 
+                    authToken
+                ).json();
+
+                const nav = debtPosition.paymentOption[0].installments[0].nav; 
+                const orgFiscalCode = organization.fiscalCode;
+
+                const verifyRes = verifyPaymentNotice(pspInfo, orgFiscalCode, nav);
+                const amount = extractXmlValue(verifyRes.body, 'amount');
+                const dueDate = extractXmlValue(verifyRes.body, 'dueDate');
+
+                const activateRes = activatePaymentNotice(pspInfo, orgFiscalCode, nav, amount, dueDate);
+                const paymentToken = extractXmlValue(activateRes.body, 'paymentToken');
+
+                sendPaymentOutcome(pspInfo, paymentToken, userInfo.fiscalCode, userInfo.name, userInfo.email);
+            }
+        );
+    });
+}
