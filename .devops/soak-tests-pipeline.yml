@@ -206,7 +206,7 @@ variables:
       - name: azureServiceConnectionName
         value: $(DEV_AZURE_SERVICE_CONNECTION_NAME)
       - name: keyVaultName
-        value: $(DEV_KV_NAME)
+        value: $(DEV_PAYHUB_KV_NAME)
 
   - ${{ else }}:
       - name: selfHostedAgentPool
@@ -214,7 +214,7 @@ variables:
       - name: azureServiceConnectionName
         value: $(UAT_AZURE_SERVICE_CONNECTION_NAME)
       - name: keyVaultName
-        value: $(UAT_KV_NAME)
+        value: $(UAT_PAYHUB_KV_NAME)
         
   # Decoding scenario type
   - ${{ if eq(parameters.SCENARIO, 'Fixed TPS') }}:
