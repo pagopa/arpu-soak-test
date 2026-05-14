@@ -19,6 +19,11 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
         id_channel: CONFIG.PSP.ID_CHANNEL,
         password: CONFIG.PSP.PASSWORD
     };
+    
+    console.log(JSON.stringify(pspInfo));
+    if (!pspInfo.id || !pspInfo.id_broker || !pspInfo.id_channel || !pspInfo.password) {
+        abort("missing config psp");
+    }
 
     organizations.forEach(organization => {
         const debtPositionTypeOrgs = getDebtPositionTypeOrgsWithSpontaneous(brokerId, organization.organizationId, authToken).json();
