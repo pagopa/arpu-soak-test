@@ -32,8 +32,8 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
                     userInfo.fiscalCode, 
                     authToken
                 ).json();
-                console.log(JSON.stringify(debtPosition));
-                const nav = debtPosition.paymentOption[0].installments[0].nav; 
+
+                const nav = debtPosition.paymentDetails.nav; 
                 const orgFiscalCode = organization.fiscalCode;
 
                 const verifyRes = verifyPaymentNotice(pspInfo, orgFiscalCode, nav);
