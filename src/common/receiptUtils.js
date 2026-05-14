@@ -20,6 +20,9 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
         password: CONFIG.PSP.PASSWORD
     };
     
+    console.log(pspInfo.id);
+    console.log(pspInfo.id_broker);
+    console.log(pspInfo.id_channel);
     if (!pspInfo.id || !pspInfo.id_broker || !pspInfo.id_channel || !pspInfo.password) {
         abort("missing config psp");
     }
