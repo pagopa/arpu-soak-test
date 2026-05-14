@@ -23,8 +23,13 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
     organizations.forEach(organization => {
         const debtPositionTypeOrgs = getDebtPositionTypeOrgsWithSpontaneous(brokerId, organization.organizationId, authToken).json();
 
+        console.log(JSON.stringify(debtPositionTypeOrgs));
+
         debtPositionTypeOrgs
-            .filter(debtPositionTypeOrg => debtPositionTypeOrg.debtPositionTypeId > 0)
+            .filter(debtPositionTypeOrg => {
+                 console.log(debtPositionTypeOrg.debtPositionTypeId);
+                return debtPositionTypeOrg.debtPositionTypeId > 0
+            })
             .forEach(debtPositionTypeOrg => {
                 const debtPosition = createSpontaneousDebtPosition(
                     brokerId, 
