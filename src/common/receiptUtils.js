@@ -20,13 +20,6 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
         password: CONFIG.PSP.PASSWORD
     };
     
-    console.log(pspInfo.id);
-    console.log(pspInfo.id_broker);
-    console.log(pspInfo.id_channel);
-    if (!pspInfo.id || !pspInfo.id_broker || !pspInfo.id_channel || !pspInfo.password) {
-        abort("missing config psp");
-    }
-
     organizations.forEach(organization => {
         const debtPositionTypeOrgs = getDebtPositionTypeOrgsWithSpontaneous(brokerId, organization.organizationId, authToken).json();
 
@@ -50,15 +43,20 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
                 const orgFiscalCode = debtPosition.orgFiscalCode;
 
                 const verifyRes = verifyPaymentNotice(pspInfo, orgFiscalCode, nav);
-                console.log(JSON.stringify(verifyRes));
+                if (verifyRes.status !== 200 || !verifyRes.body.includes('<outcome>OK</outcome>')) {
+                    return; 
+                }
+
                 const amount = extractXmlValue(verifyRes.body, 'amount');
-                console.log(amount)
                 const dueDate = extractXmlValue(verifyRes.body, 'dueDate');
-                console.log(dueDate);
+
                 const activateRes = activatePaymentNotice(pspInfo, orgFiscalCode, nav, amount, dueDate);
-                console.log(JSON.stringify(activateRes));
+                if (activateRes.status !== 200 || !activateRes.body.includes('<outcome>OK</outcome>')) {
+                    return; 
+                }
+
                 const paymentToken = extractXmlValue(activateRes.body, 'paymentToken');
-                console.log(paymentToken);
+
                 const sendPaymentOutcomeRes = sendPaymentOutcome(pspInfo, paymentToken, userInfo.fiscalCode, userInfo.name, userInfo.email);
                 console.log(JSON.stringify(sendPaymentOutcomeRes));
             }
