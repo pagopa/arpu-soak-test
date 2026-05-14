@@ -1,10 +1,10 @@
-import { getOrganizationsWithSpontaneous } from "../api/organization";
-import { createSpontaneousDebtPosition } from "../api/debtPosition";
+import { getOrganizationsWithSpontaneous } from "../api/organization.js";
+import { createSpontaneousDebtPosition } from "../api/debtPosition.js";
 import { CONFIG } from "../common/envVars.js"
 import { abort } from "../common/utils.js";
-import { getDebtPositionTypeOrgsWithSpontaneous } from "../api/debtPositionTypeOrg";
-import { activatePaymentNotice, sendPaymentOutcome, verifyPaymentNotice } from "../api/soap/nodo";
-import { extractXmlValue } from "./xml";
+import { getDebtPositionTypeOrgsWithSpontaneous } from "../api/debtPositionTypeOrg.js";
+import { activatePaymentNotice, sendPaymentOutcome, verifyPaymentNotice } from "../api/soap/nodo.js";
+import { extractXmlValue } from "./xml.js";
 
 export function seedsReceipts(brokerId, authToken, userInfo) {
     const organizations = getOrganizationsWithSpontaneous(brokerId, authToken).json();
