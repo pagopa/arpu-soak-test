@@ -32,7 +32,7 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
                     userInfo.fiscalCode, 
                     authToken
                 ).json();
-
+                console.log(JSON.stringify(debtPosition));
                 const nav = debtPosition.paymentOption[0].installments[0].nav; 
                 const orgFiscalCode = organization.fiscalCode;
 
