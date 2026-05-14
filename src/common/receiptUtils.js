@@ -43,13 +43,17 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
                 const orgFiscalCode = debtPosition.orgFiscalCode;
 
                 const verifyRes = verifyPaymentNotice(pspInfo, orgFiscalCode, nav);
+                console.log(JSON.stringify(verifyRes));
                 const amount = extractXmlValue(verifyRes.body, 'amount');
+                console.log(amount)
                 const dueDate = extractXmlValue(verifyRes.body, 'dueDate');
-
+                console.log(dueDate);
                 const activateRes = activatePaymentNotice(pspInfo, orgFiscalCode, nav, amount, dueDate);
+                console.log(JSON.stringify(activateRes));
                 const paymentToken = extractXmlValue(activateRes.body, 'paymentToken');
-
-                sendPaymentOutcome(pspInfo, paymentToken, userInfo.fiscalCode, userInfo.name, userInfo.email);
+                console.log(paymentToken);
+                const sendPaymentOutcomeRes = sendPaymentOutcome(pspInfo, paymentToken, userInfo.fiscalCode, userInfo.name, userInfo.email);
+                console.log(JSON.stringify(sendPaymentOutcomeRes));
             }
         );
     });
