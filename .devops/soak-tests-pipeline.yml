@@ -282,7 +282,7 @@ jobs:
                 ENV_LOWER=$(echo "${{ parameters.TARGET_ENV }}" | tr '[:upper:]' '[:lower:]')
 
                 function extractSecret() {
-                  SECRET_KEY=$1
+                  JSON_PATH=$1
                   ENV_NAME=$2
                   VALUE=$(jq -r ".\"$ENV_LOWER\".$JSON_PATH" $(secretFilePath))
                   echo "##vso[task.setvariable variable=$ENV_NAME]$VALUE"
