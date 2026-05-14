@@ -34,7 +34,7 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
                 ).json();
 
                 const nav = debtPosition.paymentDetails.nav; 
-                const orgFiscalCode = organization.fiscalCode;
+                const orgFiscalCode = debtPosition.orgFiscalCode;
 
                 const verifyRes = verifyPaymentNotice(pspInfo, orgFiscalCode, nav);
                 const amount = extractXmlValue(verifyRes.body, 'amount');
