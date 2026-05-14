@@ -58,7 +58,6 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
                 const paymentToken = extractXmlValue(activateRes.body, 'paymentToken');
 
                 const sendPaymentOutcomeRes = sendPaymentOutcome(pspInfo, paymentToken, userInfo.fiscalCode, userInfo.name, userInfo.email);
-                console.log(JSON.stringify(sendPaymentOutcomeRes));
             }
         );
     });
