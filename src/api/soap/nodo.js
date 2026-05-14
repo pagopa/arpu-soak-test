@@ -1,5 +1,5 @@
 import http from "k6/http";
-import { formatXml } from "../../common/xml";
+import { formatXml } from "../../common/xml.js";
 
 const nodo4PspUrl = "https://api.uat.platform.pagopa.it/nodo/node-for-psp/v1";
 
