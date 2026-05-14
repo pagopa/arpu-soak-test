@@ -25,13 +25,19 @@ export function seedsReceipts(brokerId, authToken, userInfo) {
 
         debtPositionTypeOrgs
             .forEach(debtPositionTypeOrg => {
-                const debtPosition = createSpontaneousDebtPosition(
+                const debtPositionRes = createSpontaneousDebtPosition(
                     brokerId, 
                     organization.organizationId, 
                     debtPositionTypeOrg.debtPositionTypeOrgId, 
                     userInfo.fiscalCode, 
                     authToken
-                ).json();
+                );
+
+                if (debtPositionRes.status < 200 || debtPositionRes.status >= 300) {
+                    return;
+                }
+
+                const debtPosition = debtPositionRes.json();
 
                 const nav = debtPosition.paymentDetails.nav; 
                 const orgFiscalCode = debtPosition.orgFiscalCode;
