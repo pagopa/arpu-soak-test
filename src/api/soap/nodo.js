@@ -3,9 +3,9 @@ import { formatXml } from "../../common/xml.js";
 
 const nodo4PspUrl = "https://api.uat.platform.pagopa.it/nodo/node-for-psp/v1";
 
-const verifyTemplate = open('./soap/requests_template_nodo/verifyPaymentNotice.xml');
-const activateTemplate = open('./soap/requests_template_nodo/activatePaymentNoticeV2.xml');
-const sendOutcomeTemplate = open('./soap/requests_template_nodo/sendPaymentOutcomeV2.xml');
+const verifyTemplate = open('./requests_template_nodo/verifyPaymentNotice.xml');
+const activateTemplate = open('./requests_template_nodo/activatePaymentNoticeV2.xml');
+const sendOutcomeTemplate = open('./requests_template_nodo/sendPaymentOutcomeV2.xml');
 
 export function verifyPaymentNotice(psp, orgFiscalCode, nav) {
     const payload = formatXml(verifyTemplate, {
