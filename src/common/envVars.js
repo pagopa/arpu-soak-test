@@ -83,6 +83,13 @@ export const CONFIG = {
   CONTEXT: {
     BROKER_ID: parseInt(__ENV.BROKER_ID),
     IPZS_ORGANIZATION_FISCAL_CODE: "00399810589"
+  },
+
+  PSP: {
+        ID: __ENV.PSP_ID,
+        ID_BROKER: __ENV.PSP_ID_BROKER,
+        ID_CHANNEL: __ENV.PSP_ID_CHANNEL,
+        PASSWORD: __ENV.PSP_PASSWORD,
   }
 
 };
