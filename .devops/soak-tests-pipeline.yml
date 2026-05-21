@@ -298,6 +298,12 @@ jobs:
                 docker pull grafana/k6:latest
               displayName: Pull k6 image
             
+            - script: |
+                TRACE_ID=$(uuidgen | tr -d '-')
+                echo "Generated traceId: $TRACE_ID"
+                echo "##vso[task.setvariable variable=TRACE_ID_ENV]$TRACE_ID"
+              displayName: Generate traceId
+
             - ${{ each k6Test in split(variables.SCRIPTS_TO_EXECUTE, ',') }}:
                 - script: |
                     chmod +x runAll.sh
@@ -320,6 +326,7 @@ jobs:
                       -e THRESHOLDS_API_MAX_P95_MS_ENV=${{ parameters.THRESHOLDS_API_MAX_P95_MS_ENV }} \
                       \
                       -e BROKER_ID=${{ parameters.BROKER_ID }} \
+                      -e TRACE_ID_ENV=$(TRACE_ID_ENV) \
                       \
                       -e PSP_ID=$(PSP_ID_ENV) \
                       -e PSP_ID_BROKER=$(PSP_ID_BROKER_ENV) \
