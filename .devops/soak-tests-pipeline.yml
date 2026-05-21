@@ -326,6 +326,7 @@ jobs:
                       -e THRESHOLDS_API_MAX_P95_MS_ENV=${{ parameters.THRESHOLDS_API_MAX_P95_MS_ENV }} \
                       \
                       -e BROKER_ID=${{ parameters.BROKER_ID }} \
+                      -e TRACE_ID_ENV=$(TRACE_ID_ENV) \
                       \
                       -e PSP_ID=$(PSP_ID_ENV) \
                       -e PSP_ID_BROKER=$(PSP_ID_BROKER_ENV) \
